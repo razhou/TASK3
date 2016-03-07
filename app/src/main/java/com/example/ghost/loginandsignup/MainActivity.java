@@ -1,7 +1,10 @@
 package com.example.ghost.loginandsignup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +29,10 @@ public class MainActivity extends Activity {
     EditText username,pass;
     TextView sukses,status;
     Button login;
-    String em = "r4ju.riy4nd4@gmail.com";
-    String p = "ada123";
-    ArrayAdapter<User>adapter=null;
+    String l = "login";
+    SharedPreferences SP;
+    String IS_USER_LOGIN="IsUserLogin";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +42,15 @@ public class MainActivity extends Activity {
         username = (EditText)findViewById(R.id.txtEmail);
         pass = (EditText)findViewById(R.id.txtPass);
         login = (Button)findViewById(R.id.btnLogin);
-        sukses = (TextView)findViewById(R.id.txtSukses);
-        status = (TextView)findViewById(R.id.txtStatus);
+
+
+            SP = getSharedPreferences(l, Context.MODE_PRIVATE);
+
 
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
 
 
@@ -92,29 +97,40 @@ public class MainActivity extends Activity {
 
 
 
-                          // if (user.getEmail().toString().equals(username.getText().toString()) ){
+                          if ((user.getEmail().toString().equals(username.getText().toString())) && (user.getPassword().toString().equals(pass.getText().toString())) ){
                                 //startActivity(new Intent(MainActivity.this, HalamanUtama.class));
-                                //Intent i = new Intent (MainActivity.this, HalamanUtama.class);
+                              SharedPreferences.Editor sp_editor= SP.edit();
+                              sp_editor.putBoolean(IS_USER_LOGIN,true);
+                              sp_editor.putString("username", username.getText().toString());
+                              sp_editor.putString("password", pass.getText().toString());
+                              sp_editor.commit();
+
+                                Intent i = new Intent (MainActivity.this, HalamanUtama.class);
+                              i.putExtra("user",username.getText().toString());
+                              i.putExtra("pass",pass.getText().toString());
+                              i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                              i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
                               //  sukses.setText("Sukses");
-                               sukses.append(
-                                    System.getProperty("line.separator") +
-                                    "id = " + String.valueOf(user.getId())+
-                                            System.getProperty("line.separator") +
+                              // sukses.append(
+                                   // System.getProperty("line.separator") +
+                                    //"id = " + String.valueOf(user.getId())+
+                                            //System.getProperty("line.separator") +
 
-                                             "Email = " + user.getEmail()+
+                                             //"Email = " + user.getEmail()+
 
-                                              System.getProperty("line.separator") +
+                                              //System.getProperty("line.separator") +
 
-                                               "Password = " + user.getPassword()
-                               );
+                                               //"Password = " + user.getPassword()
+                              // );
                                //status.setText("Berhasil");
 
                           // if(user.getEmail()=="raju"){
                               // status.setText("Berhasil");
 
-                         // }else{
-                             //  status.setText("Gagal");
-                          // }
+                          }else{
+                              Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                           }
 
 
                         // }else{
@@ -159,5 +175,9 @@ public class MainActivity extends Activity {
             }
         });
 
+
     }
+
+
+
 }

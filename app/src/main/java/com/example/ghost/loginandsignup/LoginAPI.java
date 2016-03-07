@@ -28,13 +28,13 @@ Call<User>getUser(@Path("id") String userId);
     //@GET("/users(email)")
    // Call<User>getUser(@Path("email") String email );
 
-    @PUT("/users(id)")
+    @PUT("/users/(id)")
     Call<User>updateUser (@Path("id") int user_id, @Body User user);
 
     @POST("/users")
     Call<User>saveUser (@Body User user);
 
-    @DELETE("/users(id)")
+    @DELETE("/users/(id)")
     Call<User>deleteUser (@Path("id") String user_id);
 
 }
