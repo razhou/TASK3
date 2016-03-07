@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,88 +48,72 @@ public class MainActivity extends Activity {
 
 
 
+
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 
                 Retrofit retrofit = new Retrofit.Builder().baseUrl("http://private-69e82-andro.apiary-mock.com").addConverterFactory(GsonConverterFactory.create(gson)).build();
 
                 LoginAPI user_api = retrofit.create(LoginAPI.class);
 
-                Call<User> call = user_api.getUser("raju");
-                call.enqueue(new Callback<User>() {
+                Call<Users> call = user_api.getUsers();
+                call.enqueue(new Callback<Users>() {
                     @Override
-                    public void onResponse(Response<User> response, Retrofit retrofit) {
+                    public void onResponse(Response<Users> response, Retrofit retrofit) {
                         //username.getText().toString();
                         //pass.getText().toString();
 
-
-
-
-
-
-
-
-
-
-                           if (response.isSuccess()) {
+                          // if (response.isSuccess()) {
                                 // request successful (status code 200, 201)
                               // User result = response.body();
 
-                               if(response.body().getId().toString().trim()=="raju") {
+                              // Log.e("Connect", String.valueOf(response.body().getId().toString().equals("raju")));
+                              // if(response.body().getId().toString().equals("raju")) {
 
-                                   sukses.append(
-                                           System.getProperty("line.separator") +
-                                                   "id = " + response.body().getId() +
-                                                   System.getProperty("line.separator") +
+                                 //  sukses.setText("Sukses");
 
-                                                   "Email = " + response.body().getEmail() +
-
-                                                   System.getProperty("line.separator")
-
-                                           //   "Password = " + user.getPassword()
-                                   );
-                               }
+                              // }else{
+                                  // sukses.setText("Gagal Login");
+                              // }
 
 
 
-                               status.setText("Berhasil");
-                            } else {
+                              // status.setText("Berhasil");
+                            //} else {
                                 //request not successful (like 400,401,403 etc)
                                 //Handle errors
-                              status.setText("Gagal");
-                           }
+                             // status.setText("Gagal");
+                           //}
 
 
-
-
-                       //for (Users.UserItem user : response.body().getUsers()) {
+                       for (Users.UserItem user : response.body().getUsers()) {
 
                            // String id = String.valueOf(user.getId()).toString();
 
 
 
 
-                          // if (id == "1" ){
+                          // if (user.getEmail().toString().equals(username.getText().toString()) ){
                                 //startActivity(new Intent(MainActivity.this, HalamanUtama.class));
                                 //Intent i = new Intent (MainActivity.this, HalamanUtama.class);
                               //  sukses.setText("Sukses");
-                              // sukses.append(
-                                    //System.getProperty("line.separator") +
-                                   // "id = " + String.valueOf(user.getId())+
-                                           // System.getProperty("line.separator") +
+                               sukses.append(
+                                    System.getProperty("line.separator") +
+                                    "id = " + String.valueOf(user.getId())+
+                                            System.getProperty("line.separator") +
 
-                                            // "Email = " + user.getEmail()+
+                                             "Email = " + user.getEmail()+
 
-                                             // System.getProperty("line.separator") +
+                                              System.getProperty("line.separator") +
 
-                                            //   "Password = " + user.getPassword()
-                              // );
+                                               "Password = " + user.getPassword()
+                               );
                                //status.setText("Berhasil");
 
                           // if(user.getEmail()=="raju"){
                               // status.setText("Berhasil");
 
-                          // }else{
-                               //status.setText("Gagal");
+                         // }else{
+                             //  status.setText("Gagal");
                           // }
 
 
@@ -150,7 +135,7 @@ public class MainActivity extends Activity {
 
 
 
-                       //}
+                       }
 
 
                     }
